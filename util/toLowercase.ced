@@ -1,0 +1,7 @@
+'/bootstrap':signature(toLowercase(Codes,LowerCodes)::'/bootstrap':pred,[Codes::'/bootstrap':list('/bootstrap':number),LowerCodes::'/bootstrap':list('/bootstrap':number)]).
+behavior(toLowercase(Codes,LowerCodes)::'/bootstrap':pred,!'should keep lower-case letters and non-letters unchanged', (builtin:charCodes(!'hello, world!',Codes),toLowercase(Codes,LCodes),assertEqual(LCodes,Codes,'/bootstrap':list('/bootstrap':number)))).
+behavior(toLowercase(Codes,LowerCodes)::'/bootstrap':pred,!'should change upper-case letters to lower-case', (builtin:charCodes(!'Hello, WORLD!',Codes),toLowercase(Codes,LCodes),'/bootstrap':true(builtin:charCodes(!'hello, world!',LCodes)))).
+toLowercase([Code|Codes],[LCode|LCodes]):-toLower(Code,LCode),toLowercase(Codes,LCodes).
+toLowercase([],[]):-builtin:true.
+'/bootstrap':signature(toLower(Code,LCode)::'/bootstrap':pred,[Code::'/bootstrap':number,LCode::'/bootstrap':number]).
+toLower(Code,LCode):-builtin:if(annotation:parentheses((builtin:greaterThen(Code,annotation:minComment(64,!'A-1')),builtin:greaterThen(annotation:minComment(91,!'Z+1'),Code))),builtin:plus(Code,annotation:minComment(32,!'a-A'),LCode),LCode::'/bootstrap':number=Code::'/bootstrap':number).

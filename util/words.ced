@@ -1,0 +1,16 @@
+'/bootstrap':signature(keyword(Keyword,Text)::'/bootstrap':pred,[Keyword::'/bootstrap':string,Text::'/bootstrap':string]).
+'/bootstrap':projection(keyword(Keyword,Text)::'/bootstrap':pred,'/bootstrap':horiz(['/bootstrap':vis(Keyword::'/bootstrap':string),'/bootstrap':label(!'is a keyword in'),'/bootstrap':vis(Text::'/bootstrap':string)])).
+behavior(keyword(Keyword,Text)::'/bootstrap':pred,!'should extract words in a text', (builtin:findall(W,'/bootstrap':string,keyword(W,!'hello, world?'),L),assertEqual(L,[!hello,!world],'/bootstrap':list('/bootstrap':string)))).
+behavior(keyword(Keyword,Text)::'/bootstrap':pred,!'should ignore stopwords', (builtin:findall(W,'/bootstrap':string,keyword(W,!'hello to the world!'),L),assertEqual(L,[!hello,!world],'/bootstrap':list('/bootstrap':string)))).
+behavior(keyword(Keyword,Text)::'/bootstrap':pred,!'should ignore case', (builtin:findall(W,'/bootstrap':string,keyword(W,!'hellO tO the wOrld!'),L),assertEqual(L,[!hello,!world],'/bootstrap':list('/bootstrap':string)))).
+keyword(W,Text):-'/parsing':parseString('/parsing':tokens(Tokens,words),Text),'/bootstrap':listMember(word(W),'/parsing':token(words),Tokens),\+isStopword(W).
+'/bootstrap':defAtom(words::'/parsing':lexicalContext).
+'/bootstrap':signature(word(W)::'/parsing':token(words),[W::'/bootstrap':string]).
+'/parsing':tokenDef(word(W),'/parsing':follow('/parsing':bind('/parsing':oneOrMoreMax(annotation:parentheses('/parsing':alt('/parsing':charRange(!a,!z),'/parsing':charRange(!'A',!'Z')))),WC),'/parsing':pred((toLowercase(WC,WLC),builtin:charCodes(W,WLC)))),words).
+'/bootstrap':defAtom(nonword::'/parsing':token(words)).
+'/parsing':tokenDef(nonword,'/parsing':oneOrMoreMax(annotation:parentheses('/parsing':alt('/parsing':charRange(!' ',! (@)),'/parsing':alt('/parsing':charRange(!'[',!'`'),'/parsing':charRange(!'{',!'~'))))),words).
+'/bootstrap':signature(isStopword(Word)::'/bootstrap':pred,[Word::'/bootstrap':string]).
+'/bootstrap':signature(stopwords(Words)::'/bootstrap':statement,[Words::'/bootstrap':list('/bootstrap':string)]).
+'/bootstrap':projection(stopwords(Words)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':label(!'stopwords:'),cpi:vis(Words::'/bootstrap':list('/bootstrap':string),'/bootstrap':vert)])).
+stopwords(Words)~>isStopword(Word):-'/bootstrap':listMember(Word,'/bootstrap':string,Words).
+stopwords([!to,!the,!a,!an,!and,!for]).

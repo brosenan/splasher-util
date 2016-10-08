@@ -1,0 +1,2 @@
+'/bootstrap':contextMenuEntry('/cloudlog':rule(F,A)::'/cloudlog':axiom,VNs,Path,!'Add guard',cpi:edit(Path,'/cloudlog':rule(F,builtin:true,A)::'/cloudlog':axiom,VNs)).
+'/bootstrap':contextMenuEntry('/cloudlog':axiom(Axiom)::'/bootstrap':statement,VNs,Path,!'Make conditional',cpi:edit(Path,'/cloudlog':axiom('/cloudlog':rule(_,Axiom))::'/bootstrap':statement,VNs)).
